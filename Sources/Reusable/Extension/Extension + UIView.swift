@@ -112,6 +112,30 @@ extension UIView {
         gradientLayer.frame = self.bounds
     }
     
+    public func addTwoLayerGradient(
+        colors: [UIColor],
+        locations: [NSNumber] = [0.0, 1.0]
+    ) {
+        guard colors.count == 2 else {
+            print("Error: You must provide exactly 2 colors for the gradient.")
+            return
+        }
+
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = colors.map { $0.cgColor }
+        gradientLayer.locations = locations
+        gradientLayer.startPoint = CGPoint(x: 0.5, y: 0.0)
+        gradientLayer.endPoint = CGPoint(x: 0.5, y: 1.0)
+
+        // Remove existing gradient layers
+        self.layer.sublayers?.removeAll(where: { $0 is CAGradientLayer })
+
+        // Insert and size the gradient layer
+        self.layoutIfNeeded()
+        gradientLayer.frame = self.bounds
+        self.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
     public func addTopBorderWithCorners(borderColor: UIColor, borderWidth: CGFloat, cornerRadius: CGFloat) {
             // Ensure the layout is updated before drawing
             self.layoutIfNeeded()
