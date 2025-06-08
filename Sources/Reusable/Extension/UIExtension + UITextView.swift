@@ -7,16 +7,18 @@
 
 import UIKit
 
+import UIKit
+
 private var placeholderKey: UInt8 = 0
 
 extension UITextView: UITextViewDelegate {
     
-    private var placeholderLabel: UILabel? {
+    public var placeholderLabel: UILabel? {
         get { return objc_getAssociatedObject(self, &placeholderKey) as? UILabel }
         set { objc_setAssociatedObject(self, &placeholderKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    func setPlaceholder(_ text: String, color: UIColor = .white.withAlphaComponent(0.8)) {
+    public func setPlaceholder(_ text: String, color: UIColor = .white.withAlphaComponent(0.8)) {
         if placeholderLabel == nil {
             let label = UILabel()
             label.numberOfLines = 1
@@ -39,12 +41,11 @@ extension UITextView: UITextViewDelegate {
         updatePlaceholder()
     }
     
-    func refreshPlaceholder() {
+    public func refreshPlaceholder() {
         updatePlaceholder()
     }
 
-    @objc private func updatePlaceholder() {
+    @objc public func updatePlaceholder() {
         placeholderLabel?.isHidden = !self.text.isEmpty
     }
 }
-
