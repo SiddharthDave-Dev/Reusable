@@ -18,7 +18,7 @@ extension UITextView: UITextViewDelegate {
         set { objc_setAssociatedObject(self, &placeholderKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
     }
     
-    public func setPlaceholder(_ text: String, color: UIColor = .white.withAlphaComponent(0.8)) {
+    public func setCenterPlaceholder(_ text: String, color: UIColor = .white.withAlphaComponent(0.8)) {
         if placeholderLabel == nil {
             let label = UILabel()
             label.numberOfLines = 1
@@ -31,6 +31,30 @@ extension UITextView: UITextViewDelegate {
             NSLayoutConstraint.activate([
                 label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
                 label.centerYAnchor.constraint(equalTo: self.centerYAnchor) // Left-center alignment
+            ])
+            
+            self.placeholderLabel = label
+            self.delegate = self
+            NotificationCenter.default.addObserver(self, selector: #selector(updatePlaceholder), name: UITextView.textDidChangeNotification, object: self)
+        }
+        placeholderLabel?.text = text
+        updatePlaceholder()
+    }
+    
+    
+    public func setTopPlaceholder(_ text: String, color: UIColor = .white.withAlphaComponent(0.8)) {
+        if placeholderLabel == nil {
+            let label = UILabel()
+            label.numberOfLines = 1
+            label.textColor = color
+            label.font = self.font
+            label.text = text
+            label.translatesAutoresizingMaskIntoConstraints = false
+            self.addSubview(label)
+            
+            NSLayoutConstraint.activate([
+                label.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+                label.topAnchor.constraint(equalTo: self.topAnchor, constant: 5)
             ])
             
             self.placeholderLabel = label
